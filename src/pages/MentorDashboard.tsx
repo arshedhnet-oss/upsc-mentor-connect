@@ -1,0 +1,166 @@
+import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Navigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Star, DollarSign, BookOpen, TrendingUp } from "lucide-react";
+import Navbar from "@/components/Navbar";
+
+const MentorDashboard = () => {
+  const { isAuthenticated, role, user } = useAuth();
+  const [activeTab, setActiveTab] = useState("profile");
+
+  if (!isAuthenticated || role !== "mentor") return <Navigate to="/" />;
+
+  const mockBookings = [
+    { id: "b1", aspirant: "Priya M.", date: "2026-03-10", time: "10:00 AM", type: "Video", status: "Upcoming" },
+    { id: "b2", aspirant: "Rahul K.", date: "2026-03-08", time: "2:00 PM", type: "Audio", status: "Completed" },
+    { id: "b3", aspirant: "Sneha D.", date: "2026-03-05", time: "11:00 AM", type: "Chat", status: "Completed" },
+  ];
+
+  const mockEarnings = { total: 45600, thisMonth: 12400, sessions: 38 };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-foreground">Mentor Dashboard</h1>
+          <p className="text-muted-foreground">Welcome back, {user?.name}</p>
+        </div>
+
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="mb-6 flex-wrap h-auto gap-1">
+            <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="pricing">Pricing</TabsTrigger>
+            <TabsTrigger value="posts">Posts</TabsTrigger>
+            <TabsTrigger value="bookings">Bookings</TabsTrigger>
+            <TabsTrigger value="earnings">Earnings</TabsTrigger>
+            <TabsTrigger value="reviews">Reviews</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="profile">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-4 max-w-xl">
+              <h3 className="font-semibold text-foreground">Edit Profile</h3>
+              <div className="space-y-2"><Label>Full Name</Label><Input defaultValue={user?.name} /></div>
+              <div className="space-y-2"><Label>Optional Subject</Label><Input defaultValue="Public Administration" /></div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2"><Label>Mains Attempts</Label><Input type="number" defaultValue={3} /></div>
+                <div className="space-y-2"><Label>Interview Appearances</Label><Input type="number" defaultValue={2} /></div>
+              </div>
+              <div className="space-y-2"><Label>Bio</Label><Textarea rows={4} defaultValue="AIR 45 in CSE 2019..." /></div>
+              <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90">Save Changes</Button>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="pricing">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-4 max-w-xl">
+              <h3 className="font-semibold text-foreground">Session Pricing (₹)</h3>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2"><Label>Audio Per Minute</Label><Input type="number" defaultValue={15} /></div>
+                <div className="space-y-2"><Label>Video Per Minute</Label><Input type="number" defaultValue={25} /></div>
+                <div className="space-y-2"><Label>Audio Per Hour</Label><Input type="number" defaultValue={750} /></div>
+                <div className="space-y-2"><Label>Video Per Hour</Label><Input type="number" defaultValue={1200} /></div>
+              </div>
+              <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90">Update Pricing</Button>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="posts">
+            <div className="space-y-4">
+              <div className="rounded-xl border border-border bg-card p-6 shadow-sm max-w-xl space-y-4">
+                <h3 className="font-semibold text-foreground">Create New Post</h3>
+                <div className="space-y-2"><Label>Title</Label><Input placeholder="Post title" /></div>
+                <div className="space-y-2"><Label>Category</Label><Input placeholder="e.g. Strategy, Answer Writing" /></div>
+                <div className="space-y-2"><Label>Content</Label><Textarea rows={5} placeholder="Write your post..." /></div>
+                <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90">Publish Post</Button>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="bookings">
+            <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="border-b border-border bg-secondary/50">
+                    <tr>
+                      <th className="px-4 py-3 text-left font-medium text-muted-foreground">Aspirant</th>
+                      <th className="px-4 py-3 text-left font-medium text-muted-foreground">Date</th>
+                      <th className="px-4 py-3 text-left font-medium text-muted-foreground">Time</th>
+                      <th className="px-4 py-3 text-left font-medium text-muted-foreground">Type</th>
+                      <th className="px-4 py-3 text-left font-medium text-muted-foreground">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {mockBookings.map((b) => (
+                      <tr key={b.id} className="border-b border-border last:border-0">
+                        <td className="px-4 py-3 font-medium text-foreground">{b.aspirant}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{b.date}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{b.time}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{b.type}</td>
+                        <td className="px-4 py-3">
+                          <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${b.status === "Upcoming" ? "bg-gold/15 text-gold-dark" : "bg-secondary text-muted-foreground"}`}>
+                            {b.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="earnings">
+            <div className="grid gap-4 sm:grid-cols-3 mb-6">
+              {[
+                { label: "Total Earnings", value: `₹${mockEarnings.total.toLocaleString()}`, icon: TrendingUp },
+                { label: "This Month", value: `₹${mockEarnings.thisMonth.toLocaleString()}`, icon: DollarSign },
+                { label: "Total Sessions", value: mockEarnings.sessions.toString(), icon: BookOpen },
+              ].map((s, i) => (
+                <div key={i} className="rounded-xl border border-border bg-card p-5 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gold/10">
+                      <s.icon className="h-5 w-5 text-gold-dark" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">{s.label}</p>
+                      <p className="text-xl font-bold text-foreground">{s.value}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="reviews">
+            <div className="space-y-4">
+              {[
+                { name: "Priya M.", rating: 5, comment: "Amazing session! Very helpful.", date: "2026-02-28" },
+                { name: "Rahul K.", rating: 4, comment: "Good insights on answer writing.", date: "2026-02-25" },
+              ].map((r, i) => (
+                <div key={i} className="rounded-xl border border-border bg-card p-5 shadow-sm">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-semibold text-foreground">{r.name}</span>
+                    <span className="text-xs text-muted-foreground">{r.date}</span>
+                  </div>
+                  <div className="flex gap-0.5 mb-2">
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <Star key={j} className={`h-3.5 w-3.5 ${j < r.rating ? "fill-gold text-gold" : "text-border"}`} />
+                    ))}
+                  </div>
+                  <p className="text-sm text-muted-foreground">{r.comment}</p>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  );
+};
+
+export default MentorDashboard;
