@@ -238,6 +238,9 @@ export const mentors: Mentor[] = [
     availability: ["Tue", "Thu", "Sat"],
     startingPrice: 25,
     languages: [{ language: "English", proficiency: "Native" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Malayalam", proficiency: "Native" }],
+    subscriptionPlans: [
+      { id: "sp7", name: "Ethics + Anthropology Bundle", type: "monthly", price: 7999, description: "Monthly mentorship covering both Ethics paper and Anthropology optional.", features: ["Weekly sessions", "Case study practice", "Answer evaluation"], isActive: true },
+    ],
     posts: [
       { id: "p6", title: "Ethics Paper: Think, Don't Memorize", content: "The Ethics paper tests your moral compass, not your memory. Here's how to develop genuine ethical reasoning...", date: "2025-12-05", category: "Answer Writing" },
     ],
