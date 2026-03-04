@@ -10,7 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Star, DollarSign, BookOpen, TrendingUp, Plus, Trash2 } from "lucide-react";
 import { indianLanguages, proficiencyLevels, type MentorLanguage } from "@/data/mockData";
 import Navbar from "@/components/Navbar";
-import Navbar from "@/components/Navbar";
 
 const MentorDashboard = () => {
   const { isAuthenticated, role, user } = useAuth();
