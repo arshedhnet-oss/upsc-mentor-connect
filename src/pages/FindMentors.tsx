@@ -95,6 +95,18 @@ const FindMentors = () => {
                 </Select>
               </div>
               <div className="space-y-2">
+                <Label className="text-xs">Language</Label>
+                <Select value={languageFilter} onValueChange={setLanguageFilter}>
+                  <SelectTrigger><SelectValue placeholder="All languages" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Languages</SelectItem>
+                    {indianLanguages.map((l) => (
+                      <SelectItem key={l} value={l}>{l}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
                 <Label className="text-xs">Min Rating: {minRating}</Label>
                 <Slider value={[minRating]} onValueChange={([v]) => setMinRating(v)} max={5} step={0.5} />
               </div>
