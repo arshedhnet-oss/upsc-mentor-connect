@@ -5,6 +5,18 @@ export interface MentorLanguage {
   proficiency: LanguageProficiency;
 }
 
+export type SubscriptionType = "monthly" | "one-time";
+
+export interface SubscriptionPlan {
+  id: string;
+  name: string;
+  type: SubscriptionType;
+  price: number;
+  description: string;
+  features: string[];
+  isActive: boolean;
+}
+
 export const indianLanguages = [
   "English",
   "Hindi",
