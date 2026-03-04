@@ -144,6 +144,9 @@ export const mentors: Mentor[] = [
     availability: ["Tue", "Thu", "Sat", "Sun"],
     startingPrice: 20,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Tamil", proficiency: "Native" }, { language: "Hindi", proficiency: "Conversational" }],
+    subscriptionPlans: [
+      { id: "sp3", name: "Sociology Mastery", type: "monthly", price: 5999, description: "Monthly mentorship covering sociology thinkers, Indian society, and answer writing.", features: ["Weekly video calls", "Notes access", "Answer evaluation"], isActive: true },
+    ],
     posts: [
       { id: "p3", title: "Sociology Optional: A Complete Strategy", content: "Sociology is one of the most scoring optionals if approached with clarity. Focus on thinkers, Indian society topics, and contemporary issues...", date: "2025-12-01", category: "Strategy" },
     ],
