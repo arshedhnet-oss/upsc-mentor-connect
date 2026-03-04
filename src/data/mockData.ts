@@ -5,6 +5,18 @@ export interface MentorLanguage {
   proficiency: LanguageProficiency;
 }
 
+export type SubscriptionType = "monthly" | "one-time";
+
+export interface SubscriptionPlan {
+  id: string;
+  name: string;
+  type: SubscriptionType;
+  price: number;
+  description: string;
+  features: string[];
+  isActive: boolean;
+}
+
 export const indianLanguages = [
   "English",
   "Hindi",
@@ -44,6 +56,7 @@ export interface Mentor {
   availability: string[];
   startingPrice: number;
   languages: MentorLanguage[];
+  subscriptionPlans: SubscriptionPlan[];
   posts: Post[];
   reviews: Review[];
 }
@@ -103,6 +116,10 @@ export const mentors: Mentor[] = [
     availability: ["Mon", "Wed", "Fri", "Sat"],
     startingPrice: 15,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Native" }],
+    subscriptionPlans: [
+      { id: "sp1", name: "Mains Answer Review", type: "monthly", price: 4999, description: "Weekly answer review sessions with detailed feedback on your Pub Ad answers.", features: ["4 answer reviews/month", "Written feedback", "Priority booking"], isActive: true },
+      { id: "sp2", name: "Complete Pub Ad Package", type: "one-time", price: 14999, description: "End-to-end Pub Ad optional preparation with notes, tests, and mentoring.", features: ["Full syllabus coverage", "10 mock tests", "3 one-on-one sessions"], isActive: true },
+    ],
     posts: [
       { id: "p1", title: "How to Structure Your Pub Ad Answers", content: "The key to scoring well in Pub Ad is a clear structure. Start with a definition, move to dimensions, add case studies, and conclude with reform suggestions...", date: "2025-12-15", category: "Answer Writing" },
       { id: "p2", title: "My UPSC Journey: Lessons from 3 Attempts", content: "My first attempt was about understanding the exam. The second taught me depth. The third was about precision...", date: "2025-11-20", category: "Strategy" },
@@ -127,6 +144,9 @@ export const mentors: Mentor[] = [
     availability: ["Tue", "Thu", "Sat", "Sun"],
     startingPrice: 20,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Tamil", proficiency: "Native" }, { language: "Hindi", proficiency: "Conversational" }],
+    subscriptionPlans: [
+      { id: "sp3", name: "Sociology Mastery", type: "monthly", price: 5999, description: "Monthly mentorship covering sociology thinkers, Indian society, and answer writing.", features: ["Weekly video calls", "Notes access", "Answer evaluation"], isActive: true },
+    ],
     posts: [
       { id: "p3", title: "Sociology Optional: A Complete Strategy", content: "Sociology is one of the most scoring optionals if approached with clarity. Focus on thinkers, Indian society topics, and contemporary issues...", date: "2025-12-01", category: "Strategy" },
     ],
@@ -149,6 +169,9 @@ export const mentors: Mentor[] = [
     availability: ["Mon", "Tue", "Wed", "Thu", "Fri"],
     startingPrice: 18,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Punjabi", proficiency: "Native" }],
+    subscriptionPlans: [
+      { id: "sp4", name: "Interview Prep Intensive", type: "one-time", price: 9999, description: "Complete interview preparation with 5 mock interview sessions and personality feedback.", features: ["5 mock interviews", "DAF analysis", "Body language tips"], isActive: true },
+    ],
     posts: [
       { id: "p4", title: "Cracking the UPSC Interview", content: "The interview is not about knowledge — it's about personality. Here's how to present yourself authentically while being sharp...", date: "2025-12-10", category: "Interview" },
     ],
@@ -170,6 +193,7 @@ export const mentors: Mentor[] = [
     availability: ["Wed", "Thu", "Sat", "Sun"],
     startingPrice: 12,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Native" }, { language: "Marathi", proficiency: "Fluent" }],
+    subscriptionPlans: [],
     posts: [],
     reviews: [
       { id: "r7", userName: "Neha T.", rating: 5, comment: "Anjali di makes complex polity topics so simple to understand.", date: "2025-10-20", sessionType: "chat" },
@@ -189,6 +213,10 @@ export const mentors: Mentor[] = [
     availability: ["Mon", "Wed", "Fri"],
     startingPrice: 22,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }],
+    subscriptionPlans: [
+      { id: "sp5", name: "Geography Monthly Mentorship", type: "monthly", price: 6499, description: "Comprehensive monthly geography guidance with map practice and answer writing.", features: ["4 sessions/month", "Map practice sets", "Answer reviews"], isActive: true },
+      { id: "sp6", name: "GS Paper I Crash Course", type: "one-time", price: 7999, description: "Focused crash course covering all GS Paper I geography topics.", features: ["8 recorded lectures", "Study material", "2 live doubt sessions"], isActive: true },
+    ],
     posts: [
       { id: "p5", title: "Map-Based Questions: A Scoring Opportunity", content: "Most aspirants ignore map-based questions. Here's why they shouldn't and how to prepare systematically...", date: "2025-11-25", category: "Strategy" },
     ],
@@ -210,6 +238,9 @@ export const mentors: Mentor[] = [
     availability: ["Tue", "Thu", "Sat"],
     startingPrice: 25,
     languages: [{ language: "English", proficiency: "Native" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Malayalam", proficiency: "Native" }],
+    subscriptionPlans: [
+      { id: "sp7", name: "Ethics + Anthropology Bundle", type: "monthly", price: 7999, description: "Monthly mentorship covering both Ethics paper and Anthropology optional.", features: ["Weekly sessions", "Case study practice", "Answer evaluation"], isActive: true },
+    ],
     posts: [
       { id: "p6", title: "Ethics Paper: Think, Don't Memorize", content: "The Ethics paper tests your moral compass, not your memory. Here's how to develop genuine ethical reasoning...", date: "2025-12-05", category: "Answer Writing" },
     ],
@@ -232,6 +263,7 @@ export const mentors: Mentor[] = [
     availability: ["Mon", "Tue", "Sat", "Sun"],
     startingPrice: 20,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Gujarati", proficiency: "Native" }],
+    subscriptionPlans: [],
     posts: [],
     reviews: [
       { id: "r11", userName: "Arjun M.", rating: 5, comment: "Siddharth's analytical approach to UPSC is refreshing and effective.", date: "2025-10-25", sessionType: "video" },
@@ -251,6 +283,9 @@ export const mentors: Mentor[] = [
     availability: ["Mon", "Wed", "Thu", "Fri", "Sun"],
     startingPrice: 10,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Conversational" }, { language: "Telugu", proficiency: "Native" }],
+    subscriptionPlans: [
+      { id: "sp8", name: "Essay Excellence Program", type: "one-time", price: 4999, description: "Master UPSC essay writing with structured practice and expert feedback.", features: ["10 essay evaluations", "Model essays", "Strategy session"], isActive: true },
+    ],
     posts: [
       { id: "p7", title: "Essay Writing: The Art of Scoring 150+", content: "A good UPSC essay has flow, substance, and originality. Start with a hook, build arguments logically, and end with vision...", date: "2025-11-30", category: "Answer Writing" },
     ],
@@ -272,6 +307,7 @@ export const mentors: Mentor[] = [
     availability: ["Tue", "Wed", "Fri", "Sat"],
     startingPrice: 12,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }],
+    subscriptionPlans: [],
     posts: [],
     reviews: [
       { id: "r13", userName: "Tanvi S.", rating: 4, comment: "Good conceptual clarity. Helped me understand thinkers better.", date: "2025-08-20", sessionType: "audio" },
@@ -291,6 +327,9 @@ export const mentors: Mentor[] = [
     availability: ["Mon", "Thu", "Sat", "Sun"],
     startingPrice: 18,
     languages: [{ language: "English", proficiency: "Native" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Bengali", proficiency: "Conversational" }],
+    subscriptionPlans: [
+      { id: "sp9", name: "Economics Monthly Mentorship", type: "monthly", price: 5499, description: "In-depth monthly guidance on Economics optional and GS Paper III.", features: ["4 sessions/month", "Current affairs analysis", "Answer reviews"], isActive: true },
+    ],
     posts: [
       { id: "p8", title: "Indian Economy: Beyond NCERT", content: "While NCERTs give you the base, scoring in GS III requires understanding current economic data, budget analysis, and policy implications...", date: "2025-12-08", category: "Strategy" },
     ],
