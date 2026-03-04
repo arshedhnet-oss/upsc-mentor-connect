@@ -39,6 +39,7 @@ const FindMentors = () => {
     setMaxPrice(50);
     setMinMains(0);
     setMinInterviews(0);
+    setLanguageFilter("all");
   };
 
   return (
