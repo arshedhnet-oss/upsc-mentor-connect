@@ -116,6 +116,10 @@ export const mentors: Mentor[] = [
     availability: ["Mon", "Wed", "Fri", "Sat"],
     startingPrice: 15,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Native" }],
+    subscriptionPlans: [
+      { id: "sp1", name: "Mains Answer Review", type: "monthly", price: 4999, description: "Weekly answer review sessions with detailed feedback on your Pub Ad answers.", features: ["4 answer reviews/month", "Written feedback", "Priority booking"], isActive: true },
+      { id: "sp2", name: "Complete Pub Ad Package", type: "one-time", price: 14999, description: "End-to-end Pub Ad optional preparation with notes, tests, and mentoring.", features: ["Full syllabus coverage", "10 mock tests", "3 one-on-one sessions"], isActive: true },
+    ],
     posts: [
       { id: "p1", title: "How to Structure Your Pub Ad Answers", content: "The key to scoring well in Pub Ad is a clear structure. Start with a definition, move to dimensions, add case studies, and conclude with reform suggestions...", date: "2025-12-15", category: "Answer Writing" },
       { id: "p2", title: "My UPSC Journey: Lessons from 3 Attempts", content: "My first attempt was about understanding the exam. The second taught me depth. The third was about precision...", date: "2025-11-20", category: "Strategy" },
