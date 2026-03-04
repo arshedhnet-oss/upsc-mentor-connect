@@ -209,6 +209,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 25, videoPerMinute: 40, audioPerHour: 1300, videoPerHour: 2000 },
     availability: ["Tue", "Thu", "Sat"],
     startingPrice: 25,
+    languages: [{ language: "English", proficiency: "Native" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Malayalam", proficiency: "Native" }],
     posts: [
       { id: "p6", title: "Ethics Paper: Think, Don't Memorize", content: "The Ethics paper tests your moral compass, not your memory. Here's how to develop genuine ethical reasoning...", date: "2025-12-05", category: "Answer Writing" },
     ],
