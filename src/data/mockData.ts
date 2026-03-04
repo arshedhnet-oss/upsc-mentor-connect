@@ -263,6 +263,7 @@ export const mentors: Mentor[] = [
     availability: ["Mon", "Tue", "Sat", "Sun"],
     startingPrice: 20,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Gujarati", proficiency: "Native" }],
+    subscriptionPlans: [],
     posts: [],
     reviews: [
       { id: "r11", userName: "Arjun M.", rating: 5, comment: "Siddharth's analytical approach to UPSC is refreshing and effective.", date: "2025-10-25", sessionType: "video" },
