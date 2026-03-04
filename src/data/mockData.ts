@@ -169,6 +169,9 @@ export const mentors: Mentor[] = [
     availability: ["Mon", "Tue", "Wed", "Thu", "Fri"],
     startingPrice: 18,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Punjabi", proficiency: "Native" }],
+    subscriptionPlans: [
+      { id: "sp4", name: "Interview Prep Intensive", type: "one-time", price: 9999, description: "Complete interview preparation with 5 mock interview sessions and personality feedback.", features: ["5 mock interviews", "DAF analysis", "Body language tips"], isActive: true },
+    ],
     posts: [
       { id: "p4", title: "Cracking the UPSC Interview", content: "The interview is not about knowledge — it's about personality. Here's how to present yourself authentically while being sharp...", date: "2025-12-10", category: "Interview" },
     ],
