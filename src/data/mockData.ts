@@ -148,6 +148,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 18, videoPerMinute: 28, audioPerHour: 900, videoPerHour: 1400 },
     availability: ["Mon", "Tue", "Wed", "Thu", "Fri"],
     startingPrice: 18,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Punjabi", proficiency: "Native" }],
     posts: [
       { id: "p4", title: "Cracking the UPSC Interview", content: "The interview is not about knowledge — it's about personality. Here's how to present yourself authentically while being sharp...", date: "2025-12-10", category: "Interview" },
     ],
