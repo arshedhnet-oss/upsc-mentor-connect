@@ -18,6 +18,7 @@ const FindMentors = () => {
   const [maxPrice, setMaxPrice] = useState(50);
   const [minMains, setMinMains] = useState(0);
   const [minInterviews, setMinInterviews] = useState(0);
+  const [languageFilter, setLanguageFilter] = useState("all");
 
   const filtered = useMemo(() => {
     return mentors.filter((m) => {
