@@ -231,6 +231,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 20, videoPerMinute: 32, audioPerHour: 1000, videoPerHour: 1600 },
     availability: ["Mon", "Tue", "Sat", "Sun"],
     startingPrice: 20,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Gujarati", proficiency: "Native" }],
     posts: [],
     reviews: [
       { id: "r11", userName: "Arjun M.", rating: 5, comment: "Siddharth's analytical approach to UPSC is refreshing and effective.", date: "2025-10-25", sessionType: "video" },
