@@ -307,6 +307,7 @@ export const mentors: Mentor[] = [
     availability: ["Tue", "Wed", "Fri", "Sat"],
     startingPrice: 12,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }],
+    subscriptionPlans: [],
     posts: [],
     reviews: [
       { id: "r13", userName: "Tanvi S.", rating: 4, comment: "Good conceptual clarity. Helped me understand thinkers better.", date: "2025-08-20", sessionType: "audio" },
