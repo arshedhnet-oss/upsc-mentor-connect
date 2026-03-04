@@ -250,6 +250,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 10, videoPerMinute: 18, audioPerHour: 500, videoPerHour: 900 },
     availability: ["Mon", "Wed", "Thu", "Fri", "Sun"],
     startingPrice: 10,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Conversational" }, { language: "Telugu", proficiency: "Native" }],
     posts: [
       { id: "p7", title: "Essay Writing: The Art of Scoring 150+", content: "A good UPSC essay has flow, substance, and originality. Start with a hook, build arguments logically, and end with vision...", date: "2025-11-30", category: "Answer Writing" },
     ],
