@@ -290,6 +290,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 18, videoPerMinute: 28, audioPerHour: 900, videoPerHour: 1400 },
     availability: ["Mon", "Thu", "Sat", "Sun"],
     startingPrice: 18,
+    languages: [{ language: "English", proficiency: "Native" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Bengali", proficiency: "Conversational" }],
     posts: [
       { id: "p8", title: "Indian Economy: Beyond NCERT", content: "While NCERTs give you the base, scoring in GS III requires understanding current economic data, budget analysis, and policy implications...", date: "2025-12-08", category: "Strategy" },
     ],
