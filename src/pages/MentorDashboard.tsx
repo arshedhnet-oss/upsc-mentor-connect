@@ -6,7 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, DollarSign, BookOpen, TrendingUp } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Star, DollarSign, BookOpen, TrendingUp, Plus, Trash2 } from "lucide-react";
+import { indianLanguages, proficiencyLevels, type MentorLanguage } from "@/data/mockData";
+import Navbar from "@/components/Navbar";
 import Navbar from "@/components/Navbar";
 
 const MentorDashboard = () => {
