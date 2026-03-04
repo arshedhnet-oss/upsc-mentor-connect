@@ -169,6 +169,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 12, videoPerMinute: 20, audioPerHour: 600, videoPerHour: 1000 },
     availability: ["Wed", "Thu", "Sat", "Sun"],
     startingPrice: 12,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Native" }, { language: "Marathi", proficiency: "Fluent" }],
     posts: [],
     reviews: [
       { id: "r7", userName: "Neha T.", rating: 5, comment: "Anjali di makes complex polity topics so simple to understand.", date: "2025-10-20", sessionType: "chat" },
