@@ -188,6 +188,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 22, videoPerMinute: 35, audioPerHour: 1100, videoPerHour: 1800 },
     availability: ["Mon", "Wed", "Fri"],
     startingPrice: 22,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }],
     posts: [
       { id: "p5", title: "Map-Based Questions: A Scoring Opportunity", content: "Most aspirants ignore map-based questions. Here's why they shouldn't and how to prepare systematically...", date: "2025-11-25", category: "Strategy" },
     ],
