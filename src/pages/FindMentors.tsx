@@ -81,7 +81,7 @@ const FindMentors = () => {
                 Clear all
               </button>
             </div>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
               <div className="space-y-2">
                 <Label className="text-xs">Optional Subject</Label>
                 <Select value={subjectFilter} onValueChange={setSubjectFilter}>
