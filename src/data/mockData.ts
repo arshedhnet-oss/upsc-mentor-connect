@@ -283,6 +283,9 @@ export const mentors: Mentor[] = [
     availability: ["Mon", "Wed", "Thu", "Fri", "Sun"],
     startingPrice: 10,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Conversational" }, { language: "Telugu", proficiency: "Native" }],
+    subscriptionPlans: [
+      { id: "sp8", name: "Essay Excellence Program", type: "one-time", price: 4999, description: "Master UPSC essay writing with structured practice and expert feedback.", features: ["10 essay evaluations", "Model essays", "Strategy session"], isActive: true },
+    ],
     posts: [
       { id: "p7", title: "Essay Writing: The Art of Scoring 150+", content: "A good UPSC essay has flow, substance, and originality. Start with a hook, build arguments logically, and end with vision...", date: "2025-11-30", category: "Answer Writing" },
     ],
