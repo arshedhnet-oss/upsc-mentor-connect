@@ -56,6 +56,7 @@ export interface Mentor {
   availability: string[];
   startingPrice: number;
   languages: MentorLanguage[];
+  subscriptionPlans: SubscriptionPlan[];
   posts: Post[];
   reviews: Review[];
 }
