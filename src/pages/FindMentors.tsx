@@ -28,9 +28,10 @@ const FindMentors = () => {
       if (m.startingPrice > maxPrice) return false;
       if (m.mainsAttempts < minMains) return false;
       if (m.interviewAppearances < minInterviews) return false;
+      if (languageFilter !== "all" && !m.languages.some((l) => l.language === languageFilter)) return false;
       return true;
     });
-  }, [searchQuery, subjectFilter, minRating, maxPrice, minMains, minInterviews]);
+  }, [searchQuery, subjectFilter, minRating, maxPrice, minMains, minInterviews, languageFilter]);
 
   const clearFilters = () => {
     setSubjectFilter("all");
