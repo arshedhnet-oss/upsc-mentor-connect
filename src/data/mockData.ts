@@ -126,6 +126,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 20, videoPerMinute: 30, audioPerHour: 1000, videoPerHour: 1500 },
     availability: ["Tue", "Thu", "Sat", "Sun"],
     startingPrice: 20,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Tamil", proficiency: "Native" }, { language: "Hindi", proficiency: "Conversational" }],
     posts: [
       { id: "p3", title: "Sociology Optional: A Complete Strategy", content: "Sociology is one of the most scoring optionals if approached with clarity. Focus on thinkers, Indian society topics, and contemporary issues...", date: "2025-12-01", category: "Strategy" },
     ],
