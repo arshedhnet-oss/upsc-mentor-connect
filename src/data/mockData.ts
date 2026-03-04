@@ -102,6 +102,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 15, videoPerMinute: 25, audioPerHour: 750, videoPerHour: 1200 },
     availability: ["Mon", "Wed", "Fri", "Sat"],
     startingPrice: 15,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Native" }],
     posts: [
       { id: "p1", title: "How to Structure Your Pub Ad Answers", content: "The key to scoring well in Pub Ad is a clear structure. Start with a definition, move to dimensions, add case studies, and conclude with reform suggestions...", date: "2025-12-15", category: "Answer Writing" },
       { id: "p2", title: "My UPSC Journey: Lessons from 3 Attempts", content: "My first attempt was about understanding the exam. The second taught me depth. The third was about precision...", date: "2025-11-20", category: "Strategy" },
