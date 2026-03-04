@@ -174,6 +174,79 @@ const MentorDashboard = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="plans">
+            <div className="space-y-4 max-w-2xl">
+              <div className="flex items-center justify-between">
+                <h3 className="font-semibold text-foreground">Subscription Plans</h3>
+                <Button variant="outline" size="sm" onClick={addPlan} className="gap-1 text-xs">
+                  <Plus className="h-3 w-3" /> Add Plan
+                </Button>
+              </div>
+              {plans.map((plan, i) => (
+                <div key={plan.id} className="rounded-xl border border-border bg-card p-5 shadow-sm space-y-3">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-2">
+                      <Crown className="h-4 w-4 text-gold-dark" />
+                      <span className="text-sm font-semibold text-foreground">Plan {i + 1}</span>
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => removePlan(i)} className="h-8 w-8 text-muted-foreground hover:text-destructive">
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-2">
+                      <Label className="text-xs">Plan Name</Label>
+                      <Input value={plan.name} onChange={(e) => updatePlan(i, "name", e.target.value)} placeholder="e.g. Mains Mastery" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs">Type</Label>
+                      <Select value={plan.type} onValueChange={(v) => updatePlan(i, "type", v)}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="monthly">Monthly</SelectItem>
+                          <SelectItem value="one-time">One-time</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-2">
+                      <Label className="text-xs">Price (₹)</Label>
+                      <Input type="number" value={plan.price} onChange={(e) => updatePlan(i, "price", Number(e.target.value))} />
+                    </div>
+                    <div className="space-y-2 flex items-end">
+                      <label className="flex items-center gap-2 text-sm">
+                        <input type="checkbox" checked={plan.isActive} onChange={(e) => updatePlan(i, "isActive", e.target.checked)} className="rounded border-border" />
+                        Active
+                      </label>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs">Description</Label>
+                    <Textarea rows={2} value={plan.description} onChange={(e) => updatePlan(i, "description", e.target.value)} placeholder="Describe what this plan includes..." />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-xs">Features</Label>
+                      <button onClick={() => addFeature(i)} className="text-xs text-muted-foreground hover:text-foreground">+ Add feature</button>
+                    </div>
+                    {plan.features.map((f, fi) => (
+                      <div key={fi} className="flex items-center gap-2">
+                        <Input value={f} onChange={(e) => updateFeature(i, fi, e.target.value)} placeholder="e.g. 4 sessions/month" className="text-sm" />
+                        <Button variant="ghost" size="icon" onClick={() => removeFeature(i, fi)} className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive" disabled={plan.features.length <= 1}>
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              {plans.length > 0 && (
+                <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90">Save All Plans</Button>
+              )}
+            </div>
+          </TabsContent>
+
           <TabsContent value="posts">
             <div className="space-y-4">
               <div className="rounded-xl border border-border bg-card p-6 shadow-sm max-w-xl space-y-4">

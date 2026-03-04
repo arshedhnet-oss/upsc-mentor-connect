@@ -107,6 +107,47 @@ const MentorProfile = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="plans">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">Subscription Plans</h3>
+              {mentor.subscriptionPlans.filter(p => p.isActive).length > 0 ? (
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {mentor.subscriptionPlans.filter(p => p.isActive).map((plan) => (
+                    <div key={plan.id} className="rounded-lg border border-border p-5 transition-all hover:shadow-md hover:border-gold/40">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <h4 className="font-semibold text-foreground">{plan.name}</h4>
+                          <Badge variant="secondary" className="mt-1 text-[10px]">
+                            <Crown className="mr-1 h-3 w-3" />
+                            {plan.type === "monthly" ? "Monthly" : "One-time"}
+                          </Badge>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xl font-bold text-foreground">₹{plan.price.toLocaleString()}</p>
+                          {plan.type === "monthly" && <p className="text-[10px] text-muted-foreground">/month</p>}
+                        </div>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">{plan.description}</p>
+                      <ul className="space-y-1.5 mb-4">
+                        {plan.features.map((f, i) => (
+                          <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <CheckCircle className="h-3.5 w-3.5 text-gold-dark shrink-0" />
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+                      <Button className="w-full bg-gradient-navy text-primary-foreground hover:opacity-90" size="sm">
+                        Subscribe
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-muted-foreground text-center py-8">No subscription plans available yet.</p>
+              )}
+            </div>
+          </TabsContent>
+
           <TabsContent value="availability">
             <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
               <h3 className="mb-4 text-lg font-semibold text-foreground">Availability</h3>

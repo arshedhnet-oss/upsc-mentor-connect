@@ -327,6 +327,9 @@ export const mentors: Mentor[] = [
     availability: ["Mon", "Thu", "Sat", "Sun"],
     startingPrice: 18,
     languages: [{ language: "English", proficiency: "Native" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Bengali", proficiency: "Conversational" }],
+    subscriptionPlans: [
+      { id: "sp9", name: "Economics Monthly Mentorship", type: "monthly", price: 5499, description: "In-depth monthly guidance on Economics optional and GS Paper III.", features: ["4 sessions/month", "Current affairs analysis", "Answer reviews"], isActive: true },
+    ],
     posts: [
       { id: "p8", title: "Indian Economy: Beyond NCERT", content: "While NCERTs give you the base, scoring in GS III requires understanding current economic data, budget analysis, and policy implications...", date: "2025-12-08", category: "Strategy" },
     ],
