@@ -73,6 +73,7 @@ const MentorProfile = () => {
         <Tabs defaultValue="pricing" className="space-y-6">
           <TabsList className="w-full justify-start">
             <TabsTrigger value="pricing">Pricing</TabsTrigger>
+            <TabsTrigger value="plans">Plans {mentor.subscriptionPlans.length > 0 && `(${mentor.subscriptionPlans.length})`}</TabsTrigger>
             <TabsTrigger value="availability">Availability</TabsTrigger>
             <TabsTrigger value="posts">Posts ({mentor.posts.length})</TabsTrigger>
             <TabsTrigger value="reviews">Reviews ({mentor.reviews.length})</TabsTrigger>
