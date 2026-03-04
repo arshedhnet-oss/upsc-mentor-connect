@@ -1,3 +1,30 @@
+export type LanguageProficiency = "Native" | "Fluent" | "Conversational" | "Basic";
+
+export interface MentorLanguage {
+  language: string;
+  proficiency: LanguageProficiency;
+}
+
+export const indianLanguages = [
+  "English",
+  "Hindi",
+  "Bengali",
+  "Telugu",
+  "Marathi",
+  "Tamil",
+  "Urdu",
+  "Gujarati",
+  "Kannada",
+  "Malayalam",
+  "Odia",
+  "Punjabi",
+  "Assamese",
+  "Maithili",
+  "Sanskrit",
+];
+
+export const proficiencyLevels: LanguageProficiency[] = ["Native", "Fluent", "Conversational", "Basic"];
+
 export interface Mentor {
   id: string;
   name: string;
@@ -16,6 +43,7 @@ export interface Mentor {
   };
   availability: string[];
   startingPrice: number;
+  languages: MentorLanguage[];
   posts: Post[];
   reviews: Review[];
 }
