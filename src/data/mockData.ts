@@ -213,6 +213,10 @@ export const mentors: Mentor[] = [
     availability: ["Mon", "Wed", "Fri"],
     startingPrice: 22,
     languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }],
+    subscriptionPlans: [
+      { id: "sp5", name: "Geography Monthly Mentorship", type: "monthly", price: 6499, description: "Comprehensive monthly geography guidance with map practice and answer writing.", features: ["4 sessions/month", "Map practice sets", "Answer reviews"], isActive: true },
+      { id: "sp6", name: "GS Paper I Crash Course", type: "one-time", price: 7999, description: "Focused crash course covering all GS Paper I geography topics.", features: ["8 recorded lectures", "Study material", "2 live doubt sessions"], isActive: true },
+    ],
     posts: [
       { id: "p5", title: "Map-Based Questions: A Scoring Opportunity", content: "Most aspirants ignore map-based questions. Here's why they shouldn't and how to prepare systematically...", date: "2025-11-25", category: "Strategy" },
     ],
