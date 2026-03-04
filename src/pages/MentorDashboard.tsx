@@ -104,6 +104,7 @@ const MentorDashboard = () => {
           <TabsList className="mb-6 flex-wrap h-auto gap-1">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="pricing">Pricing</TabsTrigger>
+            <TabsTrigger value="plans">Plans</TabsTrigger>
             <TabsTrigger value="posts">Posts</TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="earnings">Earnings</TabsTrigger>
