@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { Star, Phone, Video, ArrowLeft } from "lucide-react";
+import { Star, Phone, Video, ArrowLeft, Crown, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Calendar } from "@/components/ui/calendar";
