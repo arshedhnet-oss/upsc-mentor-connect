@@ -30,6 +30,14 @@ const MentorCard = ({ mentor }: { mentor: Mentor }) => {
         <span><strong className="text-foreground">{mentor.interviewAppearances}</strong> Interviews</span>
       </div>
 
+      <div className="mt-2 flex flex-wrap gap-1">
+        {mentor.languages.map((l) => (
+          <span key={l.language} className="rounded-full bg-secondary px-2 py-0.5 text-[10px] text-muted-foreground">
+            {l.language}
+          </span>
+        ))}
+      </div>
+
       <div className="mt-4 flex items-center justify-between">
         <span className="text-sm font-semibold text-foreground">
           From ₹{mentor.startingPrice}<span className="text-xs font-normal text-muted-foreground">/min</span>

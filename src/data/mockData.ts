@@ -1,3 +1,30 @@
+export type LanguageProficiency = "Native" | "Fluent" | "Conversational" | "Basic";
+
+export interface MentorLanguage {
+  language: string;
+  proficiency: LanguageProficiency;
+}
+
+export const indianLanguages = [
+  "English",
+  "Hindi",
+  "Bengali",
+  "Telugu",
+  "Marathi",
+  "Tamil",
+  "Urdu",
+  "Gujarati",
+  "Kannada",
+  "Malayalam",
+  "Odia",
+  "Punjabi",
+  "Assamese",
+  "Maithili",
+  "Sanskrit",
+];
+
+export const proficiencyLevels: LanguageProficiency[] = ["Native", "Fluent", "Conversational", "Basic"];
+
 export interface Mentor {
   id: string;
   name: string;
@@ -16,6 +43,7 @@ export interface Mentor {
   };
   availability: string[];
   startingPrice: number;
+  languages: MentorLanguage[];
   posts: Post[];
   reviews: Review[];
 }
@@ -74,6 +102,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 15, videoPerMinute: 25, audioPerHour: 750, videoPerHour: 1200 },
     availability: ["Mon", "Wed", "Fri", "Sat"],
     startingPrice: 15,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Native" }],
     posts: [
       { id: "p1", title: "How to Structure Your Pub Ad Answers", content: "The key to scoring well in Pub Ad is a clear structure. Start with a definition, move to dimensions, add case studies, and conclude with reform suggestions...", date: "2025-12-15", category: "Answer Writing" },
       { id: "p2", title: "My UPSC Journey: Lessons from 3 Attempts", content: "My first attempt was about understanding the exam. The second taught me depth. The third was about precision...", date: "2025-11-20", category: "Strategy" },
@@ -97,6 +126,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 20, videoPerMinute: 30, audioPerHour: 1000, videoPerHour: 1500 },
     availability: ["Tue", "Thu", "Sat", "Sun"],
     startingPrice: 20,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Tamil", proficiency: "Native" }, { language: "Hindi", proficiency: "Conversational" }],
     posts: [
       { id: "p3", title: "Sociology Optional: A Complete Strategy", content: "Sociology is one of the most scoring optionals if approached with clarity. Focus on thinkers, Indian society topics, and contemporary issues...", date: "2025-12-01", category: "Strategy" },
     ],
@@ -118,6 +148,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 18, videoPerMinute: 28, audioPerHour: 900, videoPerHour: 1400 },
     availability: ["Mon", "Tue", "Wed", "Thu", "Fri"],
     startingPrice: 18,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Punjabi", proficiency: "Native" }],
     posts: [
       { id: "p4", title: "Cracking the UPSC Interview", content: "The interview is not about knowledge — it's about personality. Here's how to present yourself authentically while being sharp...", date: "2025-12-10", category: "Interview" },
     ],
@@ -138,6 +169,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 12, videoPerMinute: 20, audioPerHour: 600, videoPerHour: 1000 },
     availability: ["Wed", "Thu", "Sat", "Sun"],
     startingPrice: 12,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Native" }, { language: "Marathi", proficiency: "Fluent" }],
     posts: [],
     reviews: [
       { id: "r7", userName: "Neha T.", rating: 5, comment: "Anjali di makes complex polity topics so simple to understand.", date: "2025-10-20", sessionType: "chat" },
@@ -156,6 +188,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 22, videoPerMinute: 35, audioPerHour: 1100, videoPerHour: 1800 },
     availability: ["Mon", "Wed", "Fri"],
     startingPrice: 22,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }],
     posts: [
       { id: "p5", title: "Map-Based Questions: A Scoring Opportunity", content: "Most aspirants ignore map-based questions. Here's why they shouldn't and how to prepare systematically...", date: "2025-11-25", category: "Strategy" },
     ],
@@ -176,6 +209,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 25, videoPerMinute: 40, audioPerHour: 1300, videoPerHour: 2000 },
     availability: ["Tue", "Thu", "Sat"],
     startingPrice: 25,
+    languages: [{ language: "English", proficiency: "Native" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Malayalam", proficiency: "Native" }],
     posts: [
       { id: "p6", title: "Ethics Paper: Think, Don't Memorize", content: "The Ethics paper tests your moral compass, not your memory. Here's how to develop genuine ethical reasoning...", date: "2025-12-05", category: "Answer Writing" },
     ],
@@ -197,6 +231,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 20, videoPerMinute: 32, audioPerHour: 1000, videoPerHour: 1600 },
     availability: ["Mon", "Tue", "Sat", "Sun"],
     startingPrice: 20,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Gujarati", proficiency: "Native" }],
     posts: [],
     reviews: [
       { id: "r11", userName: "Arjun M.", rating: 5, comment: "Siddharth's analytical approach to UPSC is refreshing and effective.", date: "2025-10-25", sessionType: "video" },
@@ -215,6 +250,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 10, videoPerMinute: 18, audioPerHour: 500, videoPerHour: 900 },
     availability: ["Mon", "Wed", "Thu", "Fri", "Sun"],
     startingPrice: 10,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Conversational" }, { language: "Telugu", proficiency: "Native" }],
     posts: [
       { id: "p7", title: "Essay Writing: The Art of Scoring 150+", content: "A good UPSC essay has flow, substance, and originality. Start with a hook, build arguments logically, and end with vision...", date: "2025-11-30", category: "Answer Writing" },
     ],
@@ -235,6 +271,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 12, videoPerMinute: 20, audioPerHour: 600, videoPerHour: 1000 },
     availability: ["Tue", "Wed", "Fri", "Sat"],
     startingPrice: 12,
+    languages: [{ language: "English", proficiency: "Fluent" }, { language: "Hindi", proficiency: "Fluent" }],
     posts: [],
     reviews: [
       { id: "r13", userName: "Tanvi S.", rating: 4, comment: "Good conceptual clarity. Helped me understand thinkers better.", date: "2025-08-20", sessionType: "audio" },
@@ -253,6 +290,7 @@ export const mentors: Mentor[] = [
     pricing: { audioPerMinute: 18, videoPerMinute: 28, audioPerHour: 900, videoPerHour: 1400 },
     availability: ["Mon", "Thu", "Sat", "Sun"],
     startingPrice: 18,
+    languages: [{ language: "English", proficiency: "Native" }, { language: "Hindi", proficiency: "Fluent" }, { language: "Bengali", proficiency: "Conversational" }],
     posts: [
       { id: "p8", title: "Indian Economy: Beyond NCERT", content: "While NCERTs give you the base, scoring in GS III requires understanding current economic data, budget analysis, and policy implications...", date: "2025-12-08", category: "Strategy" },
     ],

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { mentors, optionalSubjects } from "@/data/mockData";
+import { mentors, optionalSubjects, indianLanguages } from "@/data/mockData";
 import MentorCard from "@/components/MentorCard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -18,6 +18,7 @@ const FindMentors = () => {
   const [maxPrice, setMaxPrice] = useState(50);
   const [minMains, setMinMains] = useState(0);
   const [minInterviews, setMinInterviews] = useState(0);
+  const [languageFilter, setLanguageFilter] = useState("all");
 
   const filtered = useMemo(() => {
     return mentors.filter((m) => {
@@ -27,9 +28,10 @@ const FindMentors = () => {
       if (m.startingPrice > maxPrice) return false;
       if (m.mainsAttempts < minMains) return false;
       if (m.interviewAppearances < minInterviews) return false;
+      if (languageFilter !== "all" && !m.languages.some((l) => l.language === languageFilter)) return false;
       return true;
     });
-  }, [searchQuery, subjectFilter, minRating, maxPrice, minMains, minInterviews]);
+  }, [searchQuery, subjectFilter, minRating, maxPrice, minMains, minInterviews, languageFilter]);
 
   const clearFilters = () => {
     setSubjectFilter("all");
@@ -37,6 +39,7 @@ const FindMentors = () => {
     setMaxPrice(50);
     setMinMains(0);
     setMinInterviews(0);
+    setLanguageFilter("all");
   };
 
   return (
@@ -78,7 +81,7 @@ const FindMentors = () => {
                 Clear all
               </button>
             </div>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
               <div className="space-y-2">
                 <Label className="text-xs">Optional Subject</Label>
                 <Select value={subjectFilter} onValueChange={setSubjectFilter}>
@@ -87,6 +90,18 @@ const FindMentors = () => {
                     <SelectItem value="all">All Subjects</SelectItem>
                     {optionalSubjects.map((s) => (
                       <SelectItem key={s} value={s}>{s}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs">Language</Label>
+                <Select value={languageFilter} onValueChange={setLanguageFilter}>
+                  <SelectTrigger><SelectValue placeholder="All languages" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Languages</SelectItem>
+                    {indianLanguages.map((l) => (
+                      <SelectItem key={l} value={l}>{l}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

@@ -6,12 +6,33 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, DollarSign, BookOpen, TrendingUp } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Star, DollarSign, BookOpen, TrendingUp, Plus, Trash2 } from "lucide-react";
+import { indianLanguages, proficiencyLevels, type MentorLanguage } from "@/data/mockData";
 import Navbar from "@/components/Navbar";
 
 const MentorDashboard = () => {
   const { isAuthenticated, role, user } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
+  const [languages, setLanguages] = useState<MentorLanguage[]>([
+    { language: "English", proficiency: "Fluent" },
+    { language: "Hindi", proficiency: "Native" },
+  ]);
+
+  const addLanguage = () => {
+    const available = indianLanguages.find((l) => !languages.some((ml) => ml.language === l));
+    if (available) setLanguages([...languages, { language: available, proficiency: "Conversational" }]);
+  };
+
+  const removeLanguage = (index: number) => {
+    setLanguages(languages.filter((_, i) => i !== index));
+  };
+
+  const updateLanguage = (index: number, field: keyof MentorLanguage, value: string) => {
+    const updated = [...languages];
+    updated[index] = { ...updated[index], [field]: value };
+    setLanguages(updated);
+  };
 
   if (!isAuthenticated || role !== "mentor") return <Navigate to="/" />;
 
@@ -52,6 +73,42 @@ const MentorDashboard = () => {
                 <div className="space-y-2"><Label>Interview Appearances</Label><Input type="number" defaultValue={2} /></div>
               </div>
               <div className="space-y-2"><Label>Bio</Label><Textarea rows={4} defaultValue="AIR 45 in CSE 2019..." /></div>
+              
+              {/* Languages Section */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label className="text-sm font-semibold">Languages & Proficiency</Label>
+                  <Button type="button" variant="outline" size="sm" onClick={addLanguage} className="gap-1 text-xs" disabled={languages.length >= indianLanguages.length}>
+                    <Plus className="h-3 w-3" /> Add Language
+                  </Button>
+                </div>
+                {languages.map((lang, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <Select value={lang.language} onValueChange={(v) => updateLanguage(i, "language", v)}>
+                      <SelectTrigger className="flex-1"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {indianLanguages
+                          .filter((l) => l === lang.language || !languages.some((ml) => ml.language === l))
+                          .map((l) => (
+                            <SelectItem key={l} value={l}>{l}</SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                    <Select value={lang.proficiency} onValueChange={(v) => updateLanguage(i, "proficiency", v)}>
+                      <SelectTrigger className="w-[140px]"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {proficiencyLevels.map((p) => (
+                          <SelectItem key={p} value={p}>{p}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button type="button" variant="ghost" size="icon" onClick={() => removeLanguage(i)} className="h-9 w-9 shrink-0 text-muted-foreground hover:text-destructive" disabled={languages.length <= 1}>
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+
               <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90">Save Changes</Button>
             </div>
           </TabsContent>
