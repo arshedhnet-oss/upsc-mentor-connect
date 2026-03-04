@@ -34,6 +34,53 @@ const MentorDashboard = () => {
     setLanguages(updated);
   };
 
+  const [plans, setPlans] = useState<SubscriptionPlan[]>([
+    { id: "sp1", name: "Mains Answer Review", type: "monthly", price: 4999, description: "Weekly answer review sessions with detailed feedback.", features: ["4 answer reviews/month", "Written feedback", "Priority booking"], isActive: true },
+    { id: "sp2", name: "Complete Optional Package", type: "one-time", price: 14999, description: "End-to-end optional preparation with notes and mentoring.", features: ["Full syllabus coverage", "10 mock tests", "3 one-on-one sessions"], isActive: true },
+  ]);
+
+  const addPlan = () => {
+    setPlans([...plans, {
+      id: "sp-" + Date.now(),
+      name: "",
+      type: "monthly",
+      price: 0,
+      description: "",
+      features: [""],
+      isActive: true,
+    }]);
+  };
+
+  const removePlan = (index: number) => {
+    setPlans(plans.filter((_, i) => i !== index));
+  };
+
+  const updatePlan = (index: number, field: keyof SubscriptionPlan, value: any) => {
+    const updated = [...plans];
+    updated[index] = { ...updated[index], [field]: value };
+    setPlans(updated);
+  };
+
+  const addFeature = (planIndex: number) => {
+    const updated = [...plans];
+    updated[planIndex] = { ...updated[planIndex], features: [...updated[planIndex].features, ""] };
+    setPlans(updated);
+  };
+
+  const updateFeature = (planIndex: number, featureIndex: number, value: string) => {
+    const updated = [...plans];
+    const features = [...updated[planIndex].features];
+    features[featureIndex] = value;
+    updated[planIndex] = { ...updated[planIndex], features };
+    setPlans(updated);
+  };
+
+  const removeFeature = (planIndex: number, featureIndex: number) => {
+    const updated = [...plans];
+    updated[planIndex] = { ...updated[planIndex], features: updated[planIndex].features.filter((_, i) => i !== featureIndex) };
+    setPlans(updated);
+  };
+
   if (!isAuthenticated || role !== "mentor") return <Navigate to="/" />;
 
   const mockBookings = [
