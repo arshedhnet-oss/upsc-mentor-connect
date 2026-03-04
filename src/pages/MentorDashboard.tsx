@@ -15,6 +15,25 @@ import Navbar from "@/components/Navbar";
 const MentorDashboard = () => {
   const { isAuthenticated, role, user } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
+  const [languages, setLanguages] = useState<MentorLanguage[]>([
+    { language: "English", proficiency: "Fluent" },
+    { language: "Hindi", proficiency: "Native" },
+  ]);
+
+  const addLanguage = () => {
+    const available = indianLanguages.find((l) => !languages.some((ml) => ml.language === l));
+    if (available) setLanguages([...languages, { language: available, proficiency: "Conversational" }]);
+  };
+
+  const removeLanguage = (index: number) => {
+    setLanguages(languages.filter((_, i) => i !== index));
+  };
+
+  const updateLanguage = (index: number, field: keyof MentorLanguage, value: string) => {
+    const updated = [...languages];
+    updated[index] = { ...updated[index], [field]: value };
+    setLanguages(updated);
+  };
 
   if (!isAuthenticated || role !== "mentor") return <Navigate to="/" />;
 
