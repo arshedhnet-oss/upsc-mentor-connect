@@ -13,8 +13,9 @@ import Navbar from "@/components/Navbar";
 import AvatarCropModal from "@/components/AvatarCropModal";
 
 const MentorDashboard = () => {
-  const { isAuthenticated, role, user } = useAuth();
+  const { isAuthenticated, role, user, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
+  const [avatarCropOpen, setAvatarCropOpen] = useState(false);
   const [languages, setLanguages] = useState<MentorLanguage[]>([
     { language: "English", proficiency: "Fluent" },
     { language: "Hindi", proficiency: "Native" },
