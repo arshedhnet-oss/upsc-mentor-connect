@@ -60,7 +60,12 @@ const Navbar = () => {
                     Dashboard
                   </Button>
                 </Link>
-                <span className="text-sm text-muted-foreground">{user?.name}</span>
+                <div className="flex items-center gap-2">
+                  {user?.photo && (
+                    <img src={user.photo} alt="" className="h-7 w-7 rounded-full object-cover" />
+                  )}
+                  <span className="text-sm text-muted-foreground">{user?.name}</span>
+                </div>
                 <Button variant="outline" size="sm" onClick={logout}>
                   Sign Out
                 </Button>

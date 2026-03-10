@@ -357,6 +357,11 @@ const MentorDashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
+      <AvatarCropModal
+        open={avatarCropOpen}
+        onOpenChange={setAvatarCropOpen}
+        onCropComplete={(url) => updateUser({ photo: url })}
+      />
     </div>
   );
 };
