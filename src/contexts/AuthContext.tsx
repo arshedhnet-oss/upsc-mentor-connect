@@ -58,6 +58,7 @@ const signup = (data: Partial<User> & { role: UserRole }) => {
         isAuthenticated: !!user,
         login,
         signup,
+        updateUser,
         logout,
       }}
     >
