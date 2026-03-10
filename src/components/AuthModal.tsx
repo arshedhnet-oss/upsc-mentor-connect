@@ -263,7 +263,12 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
         )}
       </DialogContent>
     </Dialog>
+    <AvatarCropModal open={avatarCropOpen} onOpenChange={setAvatarCropOpen} onCropComplete={setAvatarUrl} />
+    </>
   );
+};
+
+export default AuthModal;
 };
 
 export default AuthModal;
