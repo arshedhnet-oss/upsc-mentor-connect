@@ -19,6 +19,13 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
   const [mode, setMode] = useState<"login" | "signup" | "role-select">(
     initialMode === "signup" ? "role-select" : "login"
   );
+
+  // Sync mode when dialog opens with a new initialMode
+  React.useEffect(() => {
+    if (open) {
+      setMode(initialMode === "signup" ? "role-select" : "login");
+    }
+  }, [open, initialMode]);
   const [selectedRole, setSelectedRole] = useState<UserRole>(null);
   const [step, setStep] = useState(1);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
