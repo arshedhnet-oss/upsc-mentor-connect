@@ -231,7 +231,18 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
                 </div>
                 <div className="space-y-2">
                   <Label>Profile Photo</Label>
-                  <Input type="file" accept="image/*" />
+                  <div className="flex items-center gap-3">
+                    {avatarUrl ? (
+                      <img src={avatarUrl} alt="Avatar" className="h-14 w-14 rounded-full object-cover border border-border" />
+                    ) : (
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-border">
+                        <Camera className="h-5 w-5 text-muted-foreground" />
+                      </div>
+                    )}
+                    <Button type="button" variant="outline" size="sm" onClick={() => setAvatarCropOpen(true)}>
+                      {avatarUrl ? "Change Photo" : "Upload & Crop"}
+                    </Button>
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label>Verification Document</Label>
