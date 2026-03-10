@@ -39,6 +39,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
     setMode(initialMode === "signup" ? "role-select" : "login");
     setSelectedRole(null);
     setStep(1);
+    setAvatarUrl(null);
     setFormData({ name: "", email: "", password: "", optionalSubject: "", mainsAttempts: "", interviewAppearances: "", bio: "" });
   };
 
