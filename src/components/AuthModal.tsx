@@ -270,6 +270,3 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
 };
 
 export default AuthModal;
-};
-
-export default AuthModal;
