@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth, UserRole } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { GraduationCap, Users } from "lucide-react";
+import { GraduationCap, Users, Camera } from "lucide-react";
+import AvatarCropModal from "@/components/AvatarCropModal";
 
 interface AuthModalProps {
   open: boolean;
@@ -20,6 +21,8 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
   );
   const [selectedRole, setSelectedRole] = useState<UserRole>(null);
   const [step, setStep] = useState(1);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [avatarCropOpen, setAvatarCropOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,6 +39,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
     setMode(initialMode === "signup" ? "role-select" : "login");
     setSelectedRole(null);
     setStep(1);
+    setAvatarUrl(null);
     setFormData({ name: "", email: "", password: "", optionalSubject: "", mainsAttempts: "", interviewAppearances: "", bio: "" });
   };
 
@@ -51,7 +55,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
   };
 
   const handleSignup = () => {
-    signup({ name: formData.name, email: formData.email, role: selectedRole! });
+    signup({ name: formData.name, email: formData.email, role: selectedRole!, photo: avatarUrl || undefined });
     handleOpenChange(false);
     navigate(selectedRole === "mentor" ? "/mentor-dashboard" : "/aspirant-dashboard");
   };
@@ -60,6 +64,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
   return (
+    <>
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         {/* Role Selection */}
@@ -67,7 +72,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
           <>
             <DialogHeader>
               <DialogTitle className="text-center text-xl">Join UPSCMentor</DialogTitle>
-              <p className="text-center text-sm text-muted-foreground">Choose how you want to use the platform</p>
+              <DialogDescription className="text-center text-sm">Choose how you want to use the platform</DialogDescription>
             </DialogHeader>
             <div className="grid grid-cols-2 gap-4 py-4">
               <button
@@ -101,6 +106,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
           <>
             <DialogHeader>
               <DialogTitle className="text-center text-xl">Welcome Back</DialogTitle>
+              <DialogDescription className="text-center text-sm">Sign in to your account</DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-2">
               <div className="flex gap-2">
@@ -147,6 +153,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
           <>
             <DialogHeader>
               <DialogTitle className="text-center text-xl">Create Aspirant Account</DialogTitle>
+              <DialogDescription className="text-center text-sm">Start your UPSC preparation journey</DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-2">
               <div className="space-y-2">
@@ -181,6 +188,9 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
               <DialogTitle className="text-center text-xl">
                 Mentor Registration {step === 1 ? "(1/2)" : "(2/2)"}
               </DialogTitle>
+              <DialogDescription className="text-center text-sm">
+                {step === 1 ? "Enter your basic details" : "Complete your mentor profile"}
+              </DialogDescription>
             </DialogHeader>
             {step === 1 ? (
               <div className="space-y-4 py-2">
@@ -222,7 +232,18 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
                 </div>
                 <div className="space-y-2">
                   <Label>Profile Photo</Label>
-                  <Input type="file" accept="image/*" />
+                  <div className="flex items-center gap-3">
+                    {avatarUrl ? (
+                      <img src={avatarUrl} alt="Avatar" className="h-14 w-14 rounded-full object-cover border border-border" />
+                    ) : (
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-border">
+                        <Camera className="h-5 w-5 text-muted-foreground" />
+                      </div>
+                    )}
+                    <Button type="button" variant="outline" size="sm" onClick={() => setAvatarCropOpen(true)}>
+                      {avatarUrl ? "Change Photo" : "Upload & Crop"}
+                    </Button>
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label>Verification Document</Label>
@@ -243,6 +264,8 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
         )}
       </DialogContent>
     </Dialog>
+    <AvatarCropModal open={avatarCropOpen} onOpenChange={setAvatarCropOpen} onCropComplete={setAvatarUrl} />
+    </>
   );
 };
 

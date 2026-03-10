@@ -7,13 +7,15 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Star, DollarSign, BookOpen, TrendingUp, Plus, Trash2, Crown } from "lucide-react";
+import { Star, DollarSign, BookOpen, TrendingUp, Plus, Trash2, Crown, Camera } from "lucide-react";
 import { indianLanguages, proficiencyLevels, type MentorLanguage, type SubscriptionPlan } from "@/data/mockData";
 import Navbar from "@/components/Navbar";
+import AvatarCropModal from "@/components/AvatarCropModal";
 
 const MentorDashboard = () => {
-  const { isAuthenticated, role, user } = useAuth();
+  const { isAuthenticated, role, user, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
+  const [avatarCropOpen, setAvatarCropOpen] = useState(false);
   const [languages, setLanguages] = useState<MentorLanguage[]>([
     { language: "English", proficiency: "Fluent" },
     { language: "Hindi", proficiency: "Native" },
@@ -114,6 +116,24 @@ const MentorDashboard = () => {
           <TabsContent value="profile">
             <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-4 max-w-xl">
               <h3 className="font-semibold text-foreground">Edit Profile</h3>
+              
+              {/* Avatar Section */}
+              <div className="flex items-center gap-4">
+                {user?.photo ? (
+                  <img src={user.photo} alt="Avatar" className="h-20 w-20 rounded-full object-cover border-2 border-border" />
+                ) : (
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-dashed border-border bg-secondary">
+                    <Camera className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                )}
+                <div className="space-y-1">
+                  <Button variant="outline" size="sm" onClick={() => setAvatarCropOpen(true)}>
+                    {user?.photo ? "Change Photo" : "Upload Photo"}
+                  </Button>
+                  <p className="text-xs text-muted-foreground">Square photo recommended</p>
+                </div>
+              </div>
+
               <div className="space-y-2"><Label>Full Name</Label><Input defaultValue={user?.name} /></div>
               <div className="space-y-2"><Label>Optional Subject</Label><Input defaultValue="Public Administration" /></div>
               <div className="grid grid-cols-2 gap-3">
@@ -337,6 +357,11 @@ const MentorDashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
+      <AvatarCropModal
+        open={avatarCropOpen}
+        onOpenChange={setAvatarCropOpen}
+        onCropComplete={(url) => updateUser({ photo: url })}
+      />
     </div>
   );
 };

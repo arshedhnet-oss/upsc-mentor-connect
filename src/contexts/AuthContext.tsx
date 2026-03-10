@@ -16,6 +16,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string, role: UserRole) => void;
   signup: (data: Partial<User> & { role: UserRole }) => void;
+  updateUser: (data: Partial<User>) => void;
   logout: () => void;
 }
 
@@ -33,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const signup = (data: Partial<User> & { role: UserRole }) => {
+const signup = (data: Partial<User> & { role: UserRole }) => {
     setUser({
       id: "mock-user-" + Date.now(),
       name: data.name || "New User",
@@ -41,6 +42,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       role: data.role,
       photo: data.photo,
     });
+  };
+
+  const updateUser = (data: Partial<User>) => {
+    setUser((prev) => (prev ? { ...prev, ...data } : prev));
   };
 
   const logout = () => setUser(null);
@@ -53,6 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthenticated: !!user,
         login,
         signup,
+        updateUser,
         logout,
       }}
     >
