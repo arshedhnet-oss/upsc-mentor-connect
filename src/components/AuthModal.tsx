@@ -105,6 +105,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
           <>
             <DialogHeader>
               <DialogTitle className="text-center text-xl">Welcome Back</DialogTitle>
+              <DialogDescription className="text-center text-sm">Sign in to your account</DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-2">
               <div className="flex gap-2">
