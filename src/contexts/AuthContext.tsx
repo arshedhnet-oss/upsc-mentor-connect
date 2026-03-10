@@ -16,6 +16,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string, role: UserRole) => void;
   signup: (data: Partial<User> & { role: UserRole }) => void;
+  updateUser: (data: Partial<User>) => void;
   logout: () => void;
 }
 
