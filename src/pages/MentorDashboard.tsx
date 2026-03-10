@@ -7,9 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Star, DollarSign, BookOpen, TrendingUp, Plus, Trash2, Crown } from "lucide-react";
+import { Star, DollarSign, BookOpen, TrendingUp, Plus, Trash2, Crown, Camera } from "lucide-react";
 import { indianLanguages, proficiencyLevels, type MentorLanguage, type SubscriptionPlan } from "@/data/mockData";
 import Navbar from "@/components/Navbar";
+import AvatarCropModal from "@/components/AvatarCropModal";
 
 const MentorDashboard = () => {
   const { isAuthenticated, role, user } = useAuth();
