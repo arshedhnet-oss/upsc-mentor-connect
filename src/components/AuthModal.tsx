@@ -21,6 +21,8 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
   );
   const [selectedRole, setSelectedRole] = useState<UserRole>(null);
   const [step, setStep] = useState(1);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [avatarCropOpen, setAvatarCropOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
