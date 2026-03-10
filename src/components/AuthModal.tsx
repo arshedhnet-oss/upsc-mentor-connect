@@ -64,6 +64,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
   return (
+    <>
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         {/* Role Selection */}
