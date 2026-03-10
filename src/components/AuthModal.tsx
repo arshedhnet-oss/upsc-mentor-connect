@@ -152,6 +152,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
           <>
             <DialogHeader>
               <DialogTitle className="text-center text-xl">Create Aspirant Account</DialogTitle>
+              <DialogDescription className="text-center text-sm">Start your UPSC preparation journey</DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-2">
               <div className="space-y-2">
