@@ -187,6 +187,9 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
               <DialogTitle className="text-center text-xl">
                 Mentor Registration {step === 1 ? "(1/2)" : "(2/2)"}
               </DialogTitle>
+              <DialogDescription className="text-center text-sm">
+                {step === 1 ? "Enter your basic details" : "Complete your mentor profile"}
+              </DialogDescription>
             </DialogHeader>
             {step === 1 ? (
               <div className="space-y-4 py-2">
