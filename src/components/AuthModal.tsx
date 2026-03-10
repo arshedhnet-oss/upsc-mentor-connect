@@ -71,7 +71,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
           <>
             <DialogHeader>
               <DialogTitle className="text-center text-xl">Join UPSCMentor</DialogTitle>
-              <p className="text-center text-sm text-muted-foreground">Choose how you want to use the platform</p>
+              <DialogDescription className="text-center text-sm">Choose how you want to use the platform</DialogDescription>
             </DialogHeader>
             <div className="grid grid-cols-2 gap-4 py-4">
               <button
