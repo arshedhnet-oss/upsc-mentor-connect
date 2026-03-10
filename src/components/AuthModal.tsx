@@ -55,7 +55,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
   };
 
   const handleSignup = () => {
-    signup({ name: formData.name, email: formData.email, role: selectedRole! });
+    signup({ name: formData.name, email: formData.email, role: selectedRole!, photo: avatarUrl || undefined });
     handleOpenChange(false);
     navigate(selectedRole === "mentor" ? "/mentor-dashboard" : "/aspirant-dashboard");
   };
