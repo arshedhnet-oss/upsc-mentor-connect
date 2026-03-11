@@ -16,6 +16,11 @@ const MentorDashboard = () => {
   const { isAuthenticated, role, user, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
   const [avatarCropOpen, setAvatarCropOpen] = useState(false);
+  const [profileName, setProfileName] = useState(user?.name || "");
+  const [optionalSubject, setOptionalSubject] = useState("Public Administration");
+  const [mainsAttempts, setMainsAttempts] = useState(3);
+  const [interviewAppearances, setInterviewAppearances] = useState(2);
+  const [bio, setBio] = useState("AIR 45 in CSE 2019...");
   const [languages, setLanguages] = useState<MentorLanguage[]>([
     { language: "English", proficiency: "Fluent" },
     { language: "Hindi", proficiency: "Native" },
@@ -134,13 +139,13 @@ const MentorDashboard = () => {
                 </div>
               </div>
 
-              <div className="space-y-2"><Label>Full Name</Label><Input defaultValue={user?.name} /></div>
-              <div className="space-y-2"><Label>Optional Subject</Label><Input defaultValue="Public Administration" /></div>
+              <div className="space-y-2"><Label>Full Name</Label><Input value={profileName} onChange={(e) => setProfileName(e.target.value)} /></div>
+              <div className="space-y-2"><Label>Optional Subject</Label><Input value={optionalSubject} onChange={(e) => setOptionalSubject(e.target.value)} /></div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2"><Label>Mains Attempts</Label><Input type="number" defaultValue={3} /></div>
-                <div className="space-y-2"><Label>Interview Appearances</Label><Input type="number" defaultValue={2} /></div>
+                <div className="space-y-2"><Label>Mains Attempts</Label><Input type="number" value={mainsAttempts} onChange={(e) => setMainsAttempts(Number(e.target.value))} /></div>
+                <div className="space-y-2"><Label>Interview Appearances</Label><Input type="number" value={interviewAppearances} onChange={(e) => setInterviewAppearances(Number(e.target.value))} /></div>
               </div>
-              <div className="space-y-2"><Label>Bio</Label><Textarea rows={4} defaultValue="AIR 45 in CSE 2019..." /></div>
+              <div className="space-y-2"><Label>Bio</Label><Textarea rows={4} value={bio} onChange={(e) => setBio(e.target.value)} /></div>
               
               {/* Languages Section */}
               <div className="space-y-3">
@@ -177,7 +182,7 @@ const MentorDashboard = () => {
                 ))}
               </div>
 
-              <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90">Save Changes</Button>
+              <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90" onClick={() => { updateUser({ name: profileName }); import('sonner').then(m => m.toast.success('Profile updated successfully!')); }}>Save Changes</Button>
             </div>
           </TabsContent>
 
