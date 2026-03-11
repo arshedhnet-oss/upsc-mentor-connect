@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,8 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth, UserRole } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { GraduationCap, Users, Camera } from "lucide-react";
+import { GraduationCap, Users, Camera, Loader2 } from "lucide-react";
 import AvatarCropModal from "@/components/AvatarCropModal";
+import { toast } from "sonner";
 
 interface AuthModalProps {
   open: boolean;
@@ -20,16 +21,17 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
     initialMode === "signup" ? "role-select" : "login"
   );
 
-  // Sync mode when dialog opens with a new initialMode
   React.useEffect(() => {
     if (open) {
       setMode(initialMode === "signup" ? "role-select" : "login");
     }
   }, [open, initialMode]);
+
   const [selectedRole, setSelectedRole] = useState<UserRole>(null);
   const [step, setStep] = useState(1);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [avatarCropOpen, setAvatarCropOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -39,7 +41,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
     interviewAppearances: "",
     bio: "",
   });
-  const { login, signup } = useAuth();
+  const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
 
   const resetState = () => {
@@ -47,6 +49,7 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
     setSelectedRole(null);
     setStep(1);
     setAvatarUrl(null);
+    setSubmitting(false);
     setFormData({ name: "", email: "", password: "", optionalSubject: "", mainsAttempts: "", interviewAppearances: "", bio: "" });
   };
 
@@ -55,14 +58,43 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
     onOpenChange(val);
   };
 
-  const handleLogin = () => {
-    login(formData.email, formData.password, selectedRole || "aspirant");
+  const handleLogin = async () => {
+    if (!formData.email || !formData.password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    setSubmitting(true);
+    const { error } = await signIn(formData.email, formData.password);
+    setSubmitting(false);
+    if (error) {
+      toast.error(error.message || "Login failed");
+      return;
+    }
+    toast.success("Welcome back!");
     handleOpenChange(false);
-    navigate(selectedRole === "mentor" ? "/mentor-dashboard" : "/aspirant-dashboard");
+    // Role-based redirect happens after auth state updates
   };
 
-  const handleSignup = () => {
-    signup({ name: formData.name, email: formData.email, role: selectedRole!, photo: avatarUrl || undefined });
+  const handleSignup = async () => {
+    if (!formData.email || !formData.password || !formData.name) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+    setSubmitting(true);
+    const { error } = await signUp(formData.email, formData.password, selectedRole!, {
+      name: formData.name,
+      photo_url: avatarUrl,
+      optional_subject: formData.optionalSubject,
+      mains_attempts: parseInt(formData.mainsAttempts) || 0,
+      interview_appearances: parseInt(formData.interviewAppearances) || 0,
+      bio: formData.bio,
+    });
+    setSubmitting(false);
+    if (error) {
+      toast.error(error.message || "Signup failed");
+      return;
+    }
+    toast.success("Account created successfully!");
     handleOpenChange(false);
     navigate(selectedRole === "mentor" ? "/mentor-dashboard" : "/aspirant-dashboard");
   };
@@ -116,24 +148,6 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
               <DialogDescription className="text-center text-sm">Sign in to your account</DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-2">
-              <div className="flex gap-2">
-                <Button
-                  variant={selectedRole === "aspirant" ? "default" : "outline"}
-                  className={`flex-1 ${selectedRole === "aspirant" ? "bg-gradient-navy text-primary-foreground" : ""}`}
-                  size="sm"
-                  onClick={() => setSelectedRole("aspirant")}
-                >
-                  Aspirant
-                </Button>
-                <Button
-                  variant={selectedRole === "mentor" ? "default" : "outline"}
-                  className={`flex-1 ${selectedRole === "mentor" ? "bg-gradient-navy text-primary-foreground" : ""}`}
-                  size="sm"
-                  onClick={() => setSelectedRole("mentor")}
-                >
-                  Mentor
-                </Button>
-              </div>
               <div className="space-y-2">
                 <Label>Email</Label>
                 <Input placeholder="you@example.com" value={formData.email} onChange={(e) => updateField("email", e.target.value)} />
@@ -142,8 +156,8 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
                 <Label>Password</Label>
                 <Input type="password" placeholder="••••••••" value={formData.password} onChange={(e) => updateField("password", e.target.value)} />
               </div>
-              <Button className="w-full bg-gradient-navy text-primary-foreground hover:opacity-90" onClick={handleLogin}>
-                Sign In
+              <Button className="w-full bg-gradient-navy text-primary-foreground hover:opacity-90" onClick={handleLogin} disabled={submitting}>
+                {submitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing In...</> : "Sign In"}
               </Button>
               <p className="text-center text-sm text-muted-foreground">
                 Don't have an account?{" "}
@@ -175,8 +189,8 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
                 <Label>Password</Label>
                 <Input type="password" placeholder="••••••••" value={formData.password} onChange={(e) => updateField("password", e.target.value)} />
               </div>
-              <Button className="w-full bg-gradient-navy text-primary-foreground hover:opacity-90" onClick={handleSignup}>
-                Create Account
+              <Button className="w-full bg-gradient-navy text-primary-foreground hover:opacity-90" onClick={handleSignup} disabled={submitting}>
+                {submitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating...</> : "Create Account"}
               </Button>
               <p className="text-center text-sm text-muted-foreground">
                 Already registered?{" "}
@@ -252,17 +266,12 @@ const AuthModal = ({ open, onOpenChange, initialMode }: AuthModalProps) => {
                     </Button>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label>Verification Document</Label>
-                  <Input type="file" accept=".pdf,.jpg,.png" />
-                  <p className="text-xs text-muted-foreground">Upload marksheet or hall ticket for verification</p>
-                </div>
                 <div className="flex gap-2">
                   <Button variant="outline" className="flex-1" onClick={() => setStep(1)}>
                     ← Back
                   </Button>
-                  <Button className="flex-1 bg-gradient-navy text-primary-foreground hover:opacity-90" onClick={handleSignup}>
-                    Register
+                  <Button className="flex-1 bg-gradient-navy text-primary-foreground hover:opacity-90" onClick={handleSignup} disabled={submitting}>
+                    {submitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Registering...</> : "Register"}
                   </Button>
                 </div>
               </div>

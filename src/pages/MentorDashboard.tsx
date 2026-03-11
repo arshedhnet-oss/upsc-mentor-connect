@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,73 +7,139 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Star, DollarSign, BookOpen, TrendingUp, Plus, Trash2, Crown, Camera } from "lucide-react";
+import { Star, DollarSign, BookOpen, TrendingUp, Plus, Trash2, Crown, Camera, Loader2 } from "lucide-react";
 import { indianLanguages, proficiencyLevels, type MentorLanguage, type SubscriptionPlan } from "@/data/mockData";
 import Navbar from "@/components/Navbar";
 import AvatarCropModal from "@/components/AvatarCropModal";
+import { toast } from "sonner";
 
 const MentorDashboard = () => {
-  const { isAuthenticated, role, user, updateUser } = useAuth();
+  const { isAuthenticated, role, profile, updateProfile, loading } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
   const [avatarCropOpen, setAvatarCropOpen] = useState(false);
-  const [profileName, setProfileName] = useState(user?.name || "");
-  const [optionalSubject, setOptionalSubject] = useState("Public Administration");
-  const [mainsAttempts, setMainsAttempts] = useState(3);
-  const [interviewAppearances, setInterviewAppearances] = useState(2);
-  const [bio, setBio] = useState("AIR 45 in CSE 2019...");
+  const [saving, setSaving] = useState(false);
+
+  // Profile fields
+  const [profileName, setProfileName] = useState("");
+  const [optionalSubject, setOptionalSubject] = useState("");
+  const [mainsAttempts, setMainsAttempts] = useState(0);
+  const [interviewAppearances, setInterviewAppearances] = useState(0);
+  const [bio, setBio] = useState("");
   const [languages, setLanguages] = useState<MentorLanguage[]>([
     { language: "English", proficiency: "Fluent" },
     { language: "Hindi", proficiency: "Native" },
   ]);
 
+  // Pricing fields
+  const [audioPerMinute, setAudioPerMinute] = useState(15);
+  const [videoPerMinute, setVideoPerMinute] = useState(25);
+  const [audioPerHour, setAudioPerHour] = useState(750);
+  const [videoPerHour, setVideoPerHour] = useState(1200);
+
+  // Plans
+  const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
+
+  // Load profile data
+  useEffect(() => {
+    if (profile) {
+      setProfileName(profile.name || "");
+      setOptionalSubject(profile.optional_subject || "");
+      setMainsAttempts(profile.mains_attempts || 0);
+      setInterviewAppearances(profile.interview_appearances || 0);
+      setBio(profile.bio || "");
+      setAudioPerMinute(profile.audio_per_minute || 15);
+      setVideoPerMinute(profile.video_per_minute || 25);
+      setAudioPerHour(profile.audio_per_hour || 750);
+      setVideoPerHour(profile.video_per_hour || 1200);
+      if (profile.languages && Array.isArray(profile.languages) && profile.languages.length > 0) {
+        setLanguages(profile.languages as MentorLanguage[]);
+      }
+      if (profile.subscription_plans && Array.isArray(profile.subscription_plans) && profile.subscription_plans.length > 0) {
+        setPlans(profile.subscription_plans as SubscriptionPlan[]);
+      }
+    }
+  }, [profile]);
+
+  const handleSaveProfile = async () => {
+    setSaving(true);
+    const { error } = await updateProfile({
+      name: profileName,
+      optional_subject: optionalSubject,
+      mains_attempts: mainsAttempts,
+      interview_appearances: interviewAppearances,
+      bio,
+      languages: languages as any,
+    });
+    setSaving(false);
+    if (error) {
+      toast.error("Failed to save profile");
+    } else {
+      toast.success("Profile updated successfully!");
+    }
+  };
+
+  const handleSavePricing = async () => {
+    setSaving(true);
+    const { error } = await updateProfile({
+      audio_per_minute: audioPerMinute,
+      video_per_minute: videoPerMinute,
+      audio_per_hour: audioPerHour,
+      video_per_hour: videoPerHour,
+      starting_price: Math.min(audioPerMinute, videoPerMinute),
+    } as any);
+    setSaving(false);
+    if (error) {
+      toast.error("Failed to save pricing");
+    } else {
+      toast.success("Pricing updated!");
+    }
+  };
+
+  const handleSavePlans = async () => {
+    setSaving(true);
+    const { error } = await updateProfile({
+      subscription_plans: plans as any,
+    });
+    setSaving(false);
+    if (error) {
+      toast.error("Failed to save plans");
+    } else {
+      toast.success("Plans saved!");
+    }
+  };
+
+  const handleAvatarCrop = async (url: string) => {
+    await updateProfile({ photo_url: url } as any);
+    toast.success("Photo updated!");
+  };
+
+  // Language helpers
   const addLanguage = () => {
     const available = indianLanguages.find((l) => !languages.some((ml) => ml.language === l));
     if (available) setLanguages([...languages, { language: available, proficiency: "Conversational" }]);
   };
-
-  const removeLanguage = (index: number) => {
-    setLanguages(languages.filter((_, i) => i !== index));
-  };
-
+  const removeLanguage = (index: number) => setLanguages(languages.filter((_, i) => i !== index));
   const updateLanguage = (index: number, field: keyof MentorLanguage, value: string) => {
     const updated = [...languages];
     updated[index] = { ...updated[index], [field]: value };
     setLanguages(updated);
   };
 
-  const [plans, setPlans] = useState<SubscriptionPlan[]>([
-    { id: "sp1", name: "Mains Answer Review", type: "monthly", price: 4999, description: "Weekly answer review sessions with detailed feedback.", features: ["4 answer reviews/month", "Written feedback", "Priority booking"], isActive: true },
-    { id: "sp2", name: "Complete Optional Package", type: "one-time", price: 14999, description: "End-to-end optional preparation with notes and mentoring.", features: ["Full syllabus coverage", "10 mock tests", "3 one-on-one sessions"], isActive: true },
-  ]);
-
+  // Plan helpers
   const addPlan = () => {
-    setPlans([...plans, {
-      id: "sp-" + Date.now(),
-      name: "",
-      type: "monthly",
-      price: 0,
-      description: "",
-      features: [""],
-      isActive: true,
-    }]);
+    setPlans([...plans, { id: "sp-" + Date.now(), name: "", type: "monthly", price: 0, description: "", features: [""], isActive: true }]);
   };
-
-  const removePlan = (index: number) => {
-    setPlans(plans.filter((_, i) => i !== index));
-  };
-
+  const removePlan = (index: number) => setPlans(plans.filter((_, i) => i !== index));
   const updatePlan = (index: number, field: keyof SubscriptionPlan, value: any) => {
     const updated = [...plans];
     updated[index] = { ...updated[index], [field]: value };
     setPlans(updated);
   };
-
   const addFeature = (planIndex: number) => {
     const updated = [...plans];
     updated[planIndex] = { ...updated[planIndex], features: [...updated[planIndex].features, ""] };
     setPlans(updated);
   };
-
   const updateFeature = (planIndex: number, featureIndex: number, value: string) => {
     const updated = [...plans];
     const features = [...updated[planIndex].features];
@@ -81,12 +147,19 @@ const MentorDashboard = () => {
     updated[planIndex] = { ...updated[planIndex], features };
     setPlans(updated);
   };
-
   const removeFeature = (planIndex: number, featureIndex: number) => {
     const updated = [...plans];
     updated[planIndex] = { ...updated[planIndex], features: updated[planIndex].features.filter((_, i) => i !== featureIndex) };
     setPlans(updated);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   if (!isAuthenticated || role !== "mentor") return <Navigate to="/" />;
 
@@ -95,7 +168,6 @@ const MentorDashboard = () => {
     { id: "b2", aspirant: "Rahul K.", date: "2026-03-08", time: "2:00 PM", type: "Audio", status: "Completed" },
     { id: "b3", aspirant: "Sneha D.", date: "2026-03-05", time: "11:00 AM", type: "Chat", status: "Completed" },
   ];
-
   const mockEarnings = { total: 45600, thisMonth: 12400, sessions: 38 };
 
   return (
@@ -104,7 +176,7 @@ const MentorDashboard = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-foreground">Mentor Dashboard</h1>
-          <p className="text-muted-foreground">Welcome back, {user?.name}</p>
+          <p className="text-muted-foreground">Welcome back, {profile?.name}</p>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -121,11 +193,9 @@ const MentorDashboard = () => {
           <TabsContent value="profile">
             <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-4 max-w-xl">
               <h3 className="font-semibold text-foreground">Edit Profile</h3>
-              
-              {/* Avatar Section */}
               <div className="flex items-center gap-4">
-                {user?.photo ? (
-                  <img src={user.photo} alt="Avatar" className="h-20 w-20 rounded-full object-cover border-2 border-border" />
+                {profile?.photo_url ? (
+                  <img src={profile.photo_url} alt="Avatar" className="h-20 w-20 rounded-full object-cover border-2 border-border" />
                 ) : (
                   <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-dashed border-border bg-secondary">
                     <Camera className="h-8 w-8 text-muted-foreground" />
@@ -133,12 +203,11 @@ const MentorDashboard = () => {
                 )}
                 <div className="space-y-1">
                   <Button variant="outline" size="sm" onClick={() => setAvatarCropOpen(true)}>
-                    {user?.photo ? "Change Photo" : "Upload Photo"}
+                    {profile?.photo_url ? "Change Photo" : "Upload Photo"}
                   </Button>
                   <p className="text-xs text-muted-foreground">Square photo recommended</p>
                 </div>
               </div>
-
               <div className="space-y-2"><Label>Full Name</Label><Input value={profileName} onChange={(e) => setProfileName(e.target.value)} /></div>
               <div className="space-y-2"><Label>Optional Subject</Label><Input value={optionalSubject} onChange={(e) => setOptionalSubject(e.target.value)} /></div>
               <div className="grid grid-cols-2 gap-3">
@@ -147,7 +216,7 @@ const MentorDashboard = () => {
               </div>
               <div className="space-y-2"><Label>Bio</Label><Textarea rows={4} value={bio} onChange={(e) => setBio(e.target.value)} /></div>
               
-              {/* Languages Section */}
+              {/* Languages */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <Label className="text-sm font-semibold">Languages & Proficiency</Label>
@@ -160,19 +229,15 @@ const MentorDashboard = () => {
                     <Select value={lang.language} onValueChange={(v) => updateLanguage(i, "language", v)}>
                       <SelectTrigger className="flex-1"><SelectValue /></SelectTrigger>
                       <SelectContent>
-                        {indianLanguages
-                          .filter((l) => l === lang.language || !languages.some((ml) => ml.language === l))
-                          .map((l) => (
-                            <SelectItem key={l} value={l}>{l}</SelectItem>
-                          ))}
+                        {indianLanguages.filter((l) => l === lang.language || !languages.some((ml) => ml.language === l)).map((l) => (
+                          <SelectItem key={l} value={l}>{l}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <Select value={lang.proficiency} onValueChange={(v) => updateLanguage(i, "proficiency", v)}>
                       <SelectTrigger className="w-[140px]"><SelectValue /></SelectTrigger>
                       <SelectContent>
-                        {proficiencyLevels.map((p) => (
-                          <SelectItem key={p} value={p}>{p}</SelectItem>
-                        ))}
+                        {proficiencyLevels.map((p) => (<SelectItem key={p} value={p}>{p}</SelectItem>))}
                       </SelectContent>
                     </Select>
                     <Button type="button" variant="ghost" size="icon" onClick={() => removeLanguage(i)} className="h-9 w-9 shrink-0 text-muted-foreground hover:text-destructive" disabled={languages.length <= 1}>
@@ -182,7 +247,9 @@ const MentorDashboard = () => {
                 ))}
               </div>
 
-              <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90" onClick={() => { updateUser({ name: profileName }); import('sonner').then(m => m.toast.success('Profile updated successfully!')); }}>Save Changes</Button>
+              <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90" onClick={handleSaveProfile} disabled={saving}>
+                {saving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : "Save Changes"}
+              </Button>
             </div>
           </TabsContent>
 
@@ -190,12 +257,14 @@ const MentorDashboard = () => {
             <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-4 max-w-xl">
               <h3 className="font-semibold text-foreground">Session Pricing (₹)</h3>
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2"><Label>Audio Per Minute</Label><Input type="number" defaultValue={15} /></div>
-                <div className="space-y-2"><Label>Video Per Minute</Label><Input type="number" defaultValue={25} /></div>
-                <div className="space-y-2"><Label>Audio Per Hour</Label><Input type="number" defaultValue={750} /></div>
-                <div className="space-y-2"><Label>Video Per Hour</Label><Input type="number" defaultValue={1200} /></div>
+                <div className="space-y-2"><Label>Audio Per Minute</Label><Input type="number" value={audioPerMinute} onChange={(e) => setAudioPerMinute(Number(e.target.value))} /></div>
+                <div className="space-y-2"><Label>Video Per Minute</Label><Input type="number" value={videoPerMinute} onChange={(e) => setVideoPerMinute(Number(e.target.value))} /></div>
+                <div className="space-y-2"><Label>Audio Per Hour</Label><Input type="number" value={audioPerHour} onChange={(e) => setAudioPerHour(Number(e.target.value))} /></div>
+                <div className="space-y-2"><Label>Video Per Hour</Label><Input type="number" value={videoPerHour} onChange={(e) => setVideoPerHour(Number(e.target.value))} /></div>
               </div>
-              <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90">Update Pricing</Button>
+              <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90" onClick={handleSavePricing} disabled={saving}>
+                {saving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : "Update Pricing"}
+              </Button>
             </div>
           </TabsContent>
 
@@ -203,71 +272,42 @@ const MentorDashboard = () => {
             <div className="space-y-4 max-w-2xl">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-foreground">Subscription Plans</h3>
-                <Button variant="outline" size="sm" onClick={addPlan} className="gap-1 text-xs">
-                  <Plus className="h-3 w-3" /> Add Plan
-                </Button>
+                <Button variant="outline" size="sm" onClick={addPlan} className="gap-1 text-xs"><Plus className="h-3 w-3" /> Add Plan</Button>
               </div>
               {plans.map((plan, i) => (
                 <div key={plan.id} className="rounded-xl border border-border bg-card p-5 shadow-sm space-y-3">
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-2">
-                      <Crown className="h-4 w-4 text-gold-dark" />
-                      <span className="text-sm font-semibold text-foreground">Plan {i + 1}</span>
-                    </div>
-                    <Button variant="ghost" size="icon" onClick={() => removePlan(i)} className="h-8 w-8 text-muted-foreground hover:text-destructive">
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <div className="flex items-center gap-2"><Crown className="h-4 w-4 text-gold-dark" /><span className="text-sm font-semibold text-foreground">Plan {i + 1}</span></div>
+                    <Button variant="ghost" size="icon" onClick={() => removePlan(i)} className="h-8 w-8 text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="space-y-2">
-                      <Label className="text-xs">Plan Name</Label>
-                      <Input value={plan.name} onChange={(e) => updatePlan(i, "name", e.target.value)} placeholder="e.g. Mains Mastery" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-xs">Type</Label>
-                      <Select value={plan.type} onValueChange={(v) => updatePlan(i, "type", v)}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="monthly">Monthly</SelectItem>
-                          <SelectItem value="one-time">One-time</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    <div className="space-y-2"><Label className="text-xs">Plan Name</Label><Input value={plan.name} onChange={(e) => updatePlan(i, "name", e.target.value)} placeholder="e.g. Mains Mastery" /></div>
+                    <div className="space-y-2"><Label className="text-xs">Type</Label>
+                      <Select value={plan.type} onValueChange={(v) => updatePlan(i, "type", v)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="monthly">Monthly</SelectItem><SelectItem value="one-time">One-time</SelectItem></SelectContent></Select>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="space-y-2">
-                      <Label className="text-xs">Price (₹)</Label>
-                      <Input type="number" value={plan.price} onChange={(e) => updatePlan(i, "price", Number(e.target.value))} />
-                    </div>
+                    <div className="space-y-2"><Label className="text-xs">Price (₹)</Label><Input type="number" value={plan.price} onChange={(e) => updatePlan(i, "price", Number(e.target.value))} /></div>
                     <div className="space-y-2 flex items-end">
-                      <label className="flex items-center gap-2 text-sm">
-                        <input type="checkbox" checked={plan.isActive} onChange={(e) => updatePlan(i, "isActive", e.target.checked)} className="rounded border-border" />
-                        Active
-                      </label>
+                      <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={plan.isActive} onChange={(e) => updatePlan(i, "isActive", e.target.checked)} className="rounded border-border" /> Active</label>
                     </div>
                   </div>
+                  <div className="space-y-2"><Label className="text-xs">Description</Label><Textarea rows={2} value={plan.description} onChange={(e) => updatePlan(i, "description", e.target.value)} placeholder="Describe what this plan includes..." /></div>
                   <div className="space-y-2">
-                    <Label className="text-xs">Description</Label>
-                    <Textarea rows={2} value={plan.description} onChange={(e) => updatePlan(i, "description", e.target.value)} placeholder="Describe what this plan includes..." />
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-xs">Features</Label>
-                      <button onClick={() => addFeature(i)} className="text-xs text-muted-foreground hover:text-foreground">+ Add feature</button>
-                    </div>
+                    <div className="flex items-center justify-between"><Label className="text-xs">Features</Label><button onClick={() => addFeature(i)} className="text-xs text-muted-foreground hover:text-foreground">+ Add feature</button></div>
                     {plan.features.map((f, fi) => (
                       <div key={fi} className="flex items-center gap-2">
                         <Input value={f} onChange={(e) => updateFeature(i, fi, e.target.value)} placeholder="e.g. 4 sessions/month" className="text-sm" />
-                        <Button variant="ghost" size="icon" onClick={() => removeFeature(i, fi)} className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive" disabled={plan.features.length <= 1}>
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => removeFeature(i, fi)} className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive" disabled={plan.features.length <= 1}><Trash2 className="h-3 w-3" /></Button>
                       </div>
                     ))}
                   </div>
                 </div>
               ))}
               {plans.length > 0 && (
-                <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90">Save All Plans</Button>
+                <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90" onClick={handleSavePlans} disabled={saving}>
+                  {saving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : "Save All Plans"}
+                </Button>
               )}
             </div>
           </TabsContent>
@@ -305,9 +345,7 @@ const MentorDashboard = () => {
                         <td className="px-4 py-3 text-muted-foreground">{b.time}</td>
                         <td className="px-4 py-3 text-muted-foreground">{b.type}</td>
                         <td className="px-4 py-3">
-                          <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${b.status === "Upcoming" ? "bg-gold/15 text-gold-dark" : "bg-secondary text-muted-foreground"}`}>
-                            {b.status}
-                          </span>
+                          <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${b.status === "Upcoming" ? "bg-gold/15 text-gold-dark" : "bg-secondary text-muted-foreground"}`}>{b.status}</span>
                         </td>
                       </tr>
                     ))}
@@ -326,13 +364,8 @@ const MentorDashboard = () => {
               ].map((s, i) => (
                 <div key={i} className="rounded-xl border border-border bg-card p-5 shadow-sm">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gold/10">
-                      <s.icon className="h-5 w-5 text-gold-dark" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">{s.label}</p>
-                      <p className="text-xl font-bold text-foreground">{s.value}</p>
-                    </div>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gold/10"><s.icon className="h-5 w-5 text-gold-dark" /></div>
+                    <div><p className="text-xs text-muted-foreground">{s.label}</p><p className="text-xl font-bold text-foreground">{s.value}</p></div>
                   </div>
                 </div>
               ))}
@@ -362,11 +395,7 @@ const MentorDashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
-      <AvatarCropModal
-        open={avatarCropOpen}
-        onOpenChange={setAvatarCropOpen}
-        onCropComplete={(url) => updateUser({ photo: url })}
-      />
+      <AvatarCropModal open={avatarCropOpen} onOpenChange={setAvatarCropOpen} onCropComplete={handleAvatarCrop} />
     </div>
   );
 };
