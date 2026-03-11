@@ -14,16 +14,108 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          audio_per_hour: number | null
+          audio_per_minute: number | null
+          availability: string[] | null
+          bio: string | null
+          created_at: string
+          id: string
+          interview_appearances: number | null
+          languages: Json | null
+          mains_attempts: number | null
+          name: string
+          optional_subject: string | null
+          photo_url: string | null
+          rating: number | null
+          starting_price: number | null
+          subscription_plans: Json | null
+          total_reviews: number | null
+          updated_at: string
+          user_id: string
+          video_per_hour: number | null
+          video_per_minute: number | null
+        }
+        Insert: {
+          audio_per_hour?: number | null
+          audio_per_minute?: number | null
+          availability?: string[] | null
+          bio?: string | null
+          created_at?: string
+          id?: string
+          interview_appearances?: number | null
+          languages?: Json | null
+          mains_attempts?: number | null
+          name: string
+          optional_subject?: string | null
+          photo_url?: string | null
+          rating?: number | null
+          starting_price?: number | null
+          subscription_plans?: Json | null
+          total_reviews?: number | null
+          updated_at?: string
+          user_id: string
+          video_per_hour?: number | null
+          video_per_minute?: number | null
+        }
+        Update: {
+          audio_per_hour?: number | null
+          audio_per_minute?: number | null
+          availability?: string[] | null
+          bio?: string | null
+          created_at?: string
+          id?: string
+          interview_appearances?: number | null
+          languages?: Json | null
+          mains_attempts?: number | null
+          name?: string
+          optional_subject?: string | null
+          photo_url?: string | null
+          rating?: number | null
+          starting_price?: number | null
+          subscription_plans?: Json | null
+          total_reviews?: number | null
+          updated_at?: string
+          user_id?: string
+          video_per_hour?: number | null
+          video_per_minute?: number | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "mentor" | "aspirant"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +242,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["mentor", "aspirant"],
+    },
   },
 } as const
