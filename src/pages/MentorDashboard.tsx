@@ -139,13 +139,13 @@ const MentorDashboard = () => {
                 </div>
               </div>
 
-              <div className="space-y-2"><Label>Full Name</Label><Input defaultValue={user?.name} /></div>
-              <div className="space-y-2"><Label>Optional Subject</Label><Input defaultValue="Public Administration" /></div>
+              <div className="space-y-2"><Label>Full Name</Label><Input value={profileName} onChange={(e) => setProfileName(e.target.value)} /></div>
+              <div className="space-y-2"><Label>Optional Subject</Label><Input value={optionalSubject} onChange={(e) => setOptionalSubject(e.target.value)} /></div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2"><Label>Mains Attempts</Label><Input type="number" defaultValue={3} /></div>
-                <div className="space-y-2"><Label>Interview Appearances</Label><Input type="number" defaultValue={2} /></div>
+                <div className="space-y-2"><Label>Mains Attempts</Label><Input type="number" value={mainsAttempts} onChange={(e) => setMainsAttempts(Number(e.target.value))} /></div>
+                <div className="space-y-2"><Label>Interview Appearances</Label><Input type="number" value={interviewAppearances} onChange={(e) => setInterviewAppearances(Number(e.target.value))} /></div>
               </div>
-              <div className="space-y-2"><Label>Bio</Label><Textarea rows={4} defaultValue="AIR 45 in CSE 2019..." /></div>
+              <div className="space-y-2"><Label>Bio</Label><Textarea rows={4} value={bio} onChange={(e) => setBio(e.target.value)} /></div>
               
               {/* Languages Section */}
               <div className="space-y-3">
