@@ -16,6 +16,11 @@ const MentorDashboard = () => {
   const { isAuthenticated, role, user, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
   const [avatarCropOpen, setAvatarCropOpen] = useState(false);
+  const [profileName, setProfileName] = useState(user?.name || "");
+  const [optionalSubject, setOptionalSubject] = useState("Public Administration");
+  const [mainsAttempts, setMainsAttempts] = useState(3);
+  const [interviewAppearances, setInterviewAppearances] = useState(2);
+  const [bio, setBio] = useState("AIR 45 in CSE 2019...");
   const [languages, setLanguages] = useState<MentorLanguage[]>([
     { language: "English", proficiency: "Fluent" },
     { language: "Hindi", proficiency: "Native" },
