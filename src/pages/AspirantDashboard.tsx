@@ -9,7 +9,7 @@ import { mockSessions, mentors } from "@/data/mockData";
 import Navbar from "@/components/Navbar";
 
 const AspirantDashboard = () => {
-  const { isAuthenticated, role, user } = useAuth();
+  const { isAuthenticated, role, profile } = useAuth();
   const [activeTab, setActiveTab] = useState("sessions");
 
   if (!isAuthenticated || role !== "aspirant") return <Navigate to="/" />;
