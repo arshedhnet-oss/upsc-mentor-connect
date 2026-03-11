@@ -182,7 +182,7 @@ const MentorDashboard = () => {
                 ))}
               </div>
 
-              <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90">Save Changes</Button>
+              <Button className="bg-gradient-navy text-primary-foreground hover:opacity-90" onClick={() => { updateUser({ name: profileName }); import('sonner').then(m => m.toast.success('Profile updated successfully!')); }}>Save Changes</Button>
             </div>
           </TabsContent>
 
